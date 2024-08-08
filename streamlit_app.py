@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 from tensorflow.keras.models import load_model
 import pickle
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Load the model and scaler
 model = load_model('model.keras')
@@ -12,7 +14,7 @@ with open('scaler.pkl', 'rb') as f:
 # Streamlit app title
 st.title("Breast Cancer Prediction App")
 
-# User inputs for model features
+# Sidebar for user inputs
 st.sidebar.header("Input Features")
 
 def user_input_features():
@@ -56,7 +58,6 @@ input_df = input_df[selected_features]
 # Scale the input features
 scaled_input = scaler.transform(input_df)
 
-
 # Make prediction
 prediction = model.predict(scaled_input)
 
@@ -68,5 +69,38 @@ else:
     st.write("Benign")
 
 st.subheader('Prediction Probability')
-st.write(prediction[0][0])
+st.write(f"{prediction[0][0] * 100:.2f}%")
 
+# Visualization of Input Features
+st.subheader('Input Features Visualization')
+st.write("The following chart shows the input features you provided:")
+fig, ax = plt.subplots()
+sns.barplot(x=input_df.columns, y=input_df.iloc[0], ax=ax)
+ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
+st.pyplot(fig)
+
+# Education section
+st.subheader('Understanding the Features')
+st.write("""
+- **Mean Radius**: Average of distances from center to points on the perimeter.
+- **Mean Perimeter**: Perimeter of the tumor.
+- **Mean Area**: Area of the tumor.
+- **Mean Concavity**: Severity of concave portions of the contour.
+- **Mean Concave Points**: Number of concave portions of the contour.
+- **Worst Radius**: Largest distance from center to points on the perimeter.
+- **Worst Perimeter**: Largest perimeter of the tumor.
+- **Worst Area**: Largest area of the tumor.
+- **Worst Concavity**: Largest severity of concave portions of the contour.
+- **Worst Concave Points**: Largest number of concave portions of the contour.
+""")
+
+# Additional interactivity: User feedback
+st.sidebar.subheader("Feedback")
+feedback = st.sidebar.text_area("Please provide your feedback here:")
+if st.sidebar.button("Submit"):
+    st.sidebar.write("Thank you for your feedback!")
+
+# Display dataset statistics (Optional for user education)
+st.subheader('Dataset Statistics')
+if st.checkbox('Show statistics'):
+    st.write("Here are some statistics of the dataset used to train the model:")
