@@ -11,11 +11,11 @@ model = load_model('model.keras')
 with open('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
 
-# Streamlit app title
-st.title("Breast Cancer Prediction App")
+# Streamlit app title with color
+st.markdown("<h1 style='color: #FFA07A;'>Breast Cancer Prediction App</h1>", unsafe_allow_html=True)
 
-# Sidebar for user inputs
-st.sidebar.header("Input Features")
+# Sidebar for user inputs with header color
+st.sidebar.markdown("<h2 style='color: #20B2AA;'>Input Features</h2>", unsafe_allow_html=True)
 
 def user_input_features():
     mean_radius = st.sidebar.slider("Mean Radius", 6.0, 30.0, 14.0)
@@ -61,38 +61,41 @@ scaled_input = scaler.transform(input_df)
 # Make prediction
 prediction = model.predict(scaled_input)
 
-# Output prediction
+# Output prediction with color
 st.subheader('Prediction')
 if prediction[0][0] > 0.5:
-    st.write("Malignant")
+    st.markdown("<h3 style='color: #FF4500;'>Malignant</h3>", unsafe_allow_html=True)
 else:
-    st.write("Benign")
+    st.markdown("<h3 style='color: #32CD32;'>Benign</h3>", unsafe_allow_html=True)
 
 st.subheader('Prediction Probability')
 st.write(f"{prediction[0][0] * 100:.2f}%")
 
 # Visualization of Input Features
 st.subheader('Input Features Visualization')
-st.write("The following chart shows the input features you provided:")
+st.write("The following chart shows the input features you provided (in their original scale):")
 fig, ax = plt.subplots()
-sns.barplot(x=input_df.columns, y=input_df.iloc[0], ax=ax)
+sns.barplot(x=input_df.columns, y=input_df.iloc[0], ax=ax, palette='coolwarm')
 ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
+ax.set_ylabel('Feature Values')
 st.pyplot(fig)
 
-# Education section
+# Education section with colored headers
 st.subheader('Understanding the Features')
-st.write("""
-- **Mean Radius**: Average of distances from center to points on the perimeter.
-- **Mean Perimeter**: Perimeter of the tumor.
-- **Mean Area**: Area of the tumor.
-- **Mean Concavity**: Severity of concave portions of the contour.
-- **Mean Concave Points**: Number of concave portions of the contour.
-- **Worst Radius**: Largest distance from center to points on the perimeter.
-- **Worst Perimeter**: Largest perimeter of the tumor.
-- **Worst Area**: Largest area of the tumor.
-- **Worst Concavity**: Largest severity of concave portions of the contour.
-- **Worst Concave Points**: Largest number of concave portions of the contour.
-""")
+st.markdown("""
+<ul>
+    <li><b>Mean Radius</b>: Average of distances from center to points on the perimeter.</li>
+    <li><b>Mean Perimeter</b>: Perimeter of the tumor.</li>
+    <li><b>Mean Area</b>: Area of the tumor.</li>
+    <li><b>Mean Concavity</b>: Severity of concave portions of the contour.</li>
+    <li><b>Mean Concave Points</b>: Number of concave portions of the contour.</li>
+    <li><b>Worst Radius</b>: Largest distance from center to points on the perimeter.</li>
+    <li><b>Worst Perimeter</b>: Largest perimeter of the tumor.</li>
+    <li><b>Worst Area</b>: Largest area of the tumor.</li>
+    <li><b>Worst Concavity</b>: Largest severity of concave portions of the contour.</li>
+    <li><b>Worst Concave Points</b>: Largest number of concave portions of the contour.</li>
+</ul>
+""", unsafe_allow_html=True)
 
 # Additional interactivity: User feedback
 st.sidebar.subheader("Feedback")
@@ -100,7 +103,3 @@ feedback = st.sidebar.text_area("Please provide your feedback here:")
 if st.sidebar.button("Submit"):
     st.sidebar.write("Thank you for your feedback!")
 
-# Display dataset statistics (Optional for user education)
-st.subheader('Dataset Statistics')
-if st.checkbox('Show statistics'):
-    st.write("Here are some statistics of the dataset used to train the model:")
