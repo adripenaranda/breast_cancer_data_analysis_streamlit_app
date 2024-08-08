@@ -86,8 +86,8 @@ size_df = input_df[size_features]
 
 with col1:
     st.subheader('Size Features ')
-    fig, ax = plt.subplots(figsize=(8, 4))  # Adjust the figsize to make the plot bigger
-    sns.barplot(x=size_df.columns, y=size_df.iloc[0], ax=ax, palette='coolwarm')
+    fig, ax = plt.subplots(figsize=(10,6 ))  # Adjust the figsize to make the plot bigger
+    sns.barplot(x=size_df.columns, y=size_df.iloc[0], ax=ax, palette='coolwarm',fontsize=16)
     ax.set_xticklabels(wrap_labels(['Mean Radius (µm)', 'Mean Perimeter (µm)', 'Mean Area (µm²)', 
                                     'Worst Radius (µm)', 'Worst Perimeter (µm)', 'Worst Area (µm²)'], 10), 
                        rotation=0, horizontalalignment='center', fontsize=16)
@@ -101,8 +101,8 @@ other_df = input_df[other_features]
 
 with col2:
     st.subheader('Other Features ')
-    fig, ax = plt.subplots(figsize=(8, 4))  # Adjust the figsize to make the plot bigger
-    sns.barplot(x=other_df.columns, y=other_df.iloc[0], ax=ax, palette='viridis')
+    fig, ax = plt.subplots(figsize=(10, 6))  # Adjust the figsize to make the plot bigger
+    sns.barplot(x=other_df.columns, y=other_df.iloc[0], ax=ax, palette='viridis',fontsize=16)
     ax.set_xticklabels(wrap_labels(['Mean Concavity', 'Mean Concave Points', 
                                     'Worst Concavity', 'Worst Concave Points'], 10), 
                        rotation=0, horizontalalignment='center', fontsize=16)
