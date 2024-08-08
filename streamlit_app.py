@@ -85,14 +85,14 @@ size_features = ['mean radius', 'mean perimeter', 'mean area', 'worst radius', '
 size_df = input_df[size_features]
 
 with col1:
-    st.subheader('Size Features')
-    fig, ax = plt.subplots(figsize=(8, 6))  # Adjust the figsize to make the plot bigger
+    st.subheader('Size Features ')
+    fig, ax = plt.subplots(figsize=(8, 4))  # Adjust the figsize to make the plot bigger
     sns.barplot(x=size_df.columns, y=size_df.iloc[0], ax=ax, palette='coolwarm')
     ax.set_xticklabels(wrap_labels(['Mean Radius (µm)', 'Mean Perimeter (µm)', 'Mean Area (µm²)', 
                                     'Worst Radius (µm)', 'Worst Perimeter (µm)', 'Worst Area (µm²)'], 10), 
-                       rotation=45, horizontalalignment='right', fontsize=12)
-    ax.set_ylabel('Values (µm or µm²)')
-    ax.set_xlabel('Features')
+                       rotation=0, horizontalalignment='center', fontsize=12)
+    ax.set_ylabel('Values (µm or µm²)', fontsize=14)
+    ax.set_xlabel('Features', fontsize=14)
     st.pyplot(fig)
 
 # Visualization for other features
@@ -100,16 +100,17 @@ other_features = ['mean concavity', 'mean concave points', 'worst concavity', 'w
 other_df = input_df[other_features]
 
 with col2:
-    st.subheader('Other Features')
-    fig, ax = plt.subplots(figsize=(8, 6))  # Adjust the figsize to make the plot bigger
+    st.subheader('Other Features ')
+    fig, ax = plt.subplots(figsize=(8, 4))  # Adjust the figsize to make the plot bigger
     sns.barplot(x=other_df.columns, y=other_df.iloc[0], ax=ax, palette='viridis')
     ax.set_xticklabels(wrap_labels(['Mean Concavity', 'Mean Concave Points', 
                                     'Worst Concavity', 'Worst Concave Points'], 10), 
-                       rotation=45, horizontalalignment='right', fontsize=12)
-    ax.set_ylabel('Dimensionless Values')
-    ax.set_xlabel('Features')
+                       rotation=0, horizontalalignment='center', fontsize=12)
+    ax.set_ylabel('Dimensionless Values', fontsize=14)
+    ax.set_xlabel('Features', fontsize=14)
     st.pyplot(fig)
-
+    
+    
 # Education section with colored headers
 st.subheader('Understanding the Features')
 st.markdown("""
