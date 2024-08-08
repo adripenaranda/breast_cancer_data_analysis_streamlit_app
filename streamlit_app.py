@@ -75,6 +75,7 @@ st.write(f"{prediction[0][0] * 100:.2f}%")
 st.subheader('Size Features Visualization')
 size_features = ['mean radius', 'mean perimeter', 'mean area', 'worst radius', 'worst perimeter', 'worst area']
 size_df = input_df[size_features]
+
 fig, ax = plt.subplots()
 sns.barplot(x=size_df.columns, y=size_df.iloc[0], ax=ax, palette='coolwarm')
 ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
@@ -84,6 +85,7 @@ st.pyplot(fig)
 st.subheader('Other Features Visualization')
 other_features = ['mean concavity', 'mean concave points', 'worst concavity', 'worst concave points']
 other_df = input_df[other_features]
+
 fig, ax = plt.subplots()
 sns.barplot(x=other_df.columns, y=other_df.iloc[0], ax=ax, palette='viridis')
 ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
@@ -112,3 +114,4 @@ st.sidebar.subheader("Feedback")
 feedback = st.sidebar.text_area("Please provide your feedback here:")
 if st.sidebar.button("Submit"):
     st.sidebar.write("Thank you for your feedback!")
+
