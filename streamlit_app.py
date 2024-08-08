@@ -71,6 +71,11 @@ else:
 st.subheader('Prediction Probability')
 st.write(f"{prediction[0][0] * 100:.2f}%")
 
+
+# Function to wrap labels
+def wrap_labels(labels, width):
+    return [textwrap.fill(label, width) for label in labels]
+
 # Create two columns for side-by-side visualizations
 col1, col2 = st.columns(2)
 
@@ -82,9 +87,9 @@ with col1:
     st.subheader('Size Features Visualization')
     fig, ax = plt.subplots()
     sns.barplot(x=size_df.columns, y=size_df.iloc[0], ax=ax, palette='coolwarm')
-    ax.set_xticklabels(['Mean Radius (µm)', 'Mean Perimeter (µm)', 'Mean Area (µm²)', 
-                        'Worst Radius (µm)', 'Worst Perimeter (µm)', 'Worst Area (µm²)'], 
-                       rotation=45, horizontalalignment='right')
+    ax.set_xticklabels(wrap_labels(['Mean Radius (µm)', 'Mean Perimeter (µm)', 'Mean Area (µm²)', 
+                                    'Worst Radius (µm)', 'Worst Perimeter (µm)', 'Worst Area (µm²)'], 10), 
+                       rotation=0, horizontalalignment='center')
     ax.set_ylabel('Values (µm or µm²)')
     ax.set_xlabel('Features')
     st.pyplot(fig)
@@ -97,12 +102,13 @@ with col2:
     st.subheader('Other Features Visualization')
     fig, ax = plt.subplots()
     sns.barplot(x=other_df.columns, y=other_df.iloc[0], ax=ax, palette='viridis')
-    ax.set_xticklabels(['Mean Concavity', 'Mean Concave Points', 
-                        'Worst Concavity', 'Worst Concave Points'], 
-                       rotation=45, horizontalalignment='right')
+    ax.set_xticklabels(wrap_labels(['Mean Concavity', 'Mean Concave Points', 
+                                    'Worst Concavity', 'Worst Concave Points'], 10), 
+                       rotation=0, horizontalalignment='center')
     ax.set_ylabel('Dimensionless Values')
     ax.set_xlabel('Features')
     st.pyplot(fig)
+    
     
 # Education section with colored headers
 st.subheader('Understanding the Features')
