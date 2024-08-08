@@ -8,8 +8,6 @@ import pickle
 model = load_model('model.keras')
 with open('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
-with open('selected_features.pkl', 'rb') as f:
-    selected_features = pickle.load(f)
 
 # Streamlit app title
 st.title("Breast Cancer Prediction App")
@@ -47,10 +45,17 @@ def user_input_features():
 input_df = user_input_features()
 
 # Ensure the input features match the scaler's expected order
+selected_features = [
+    'mean radius', 'mean perimeter', 'mean area', 'mean concavity', 
+    'mean concave points', 'worst radius', 'worst perimeter', 
+    'worst area', 'worst concavity', 'worst concave points'
+]
+
 input_df = input_df[selected_features]
 
 # Scale the input features
 scaled_input = scaler.transform(input_df)
+
 
 # Make prediction
 prediction = model.predict(scaled_input)
@@ -64,3 +69,4 @@ else:
 
 st.subheader('Prediction Probability')
 st.write(prediction[0][0])
+
