@@ -30,16 +30,16 @@ def user_input_features():
     worst_concave_points = st.sidebar.slider("Worst Concave Points", 0.0, 0.5, 0.2)
     
     data = {
-        'Mean Radius': mean_radius,
-        'Mean Perimeter': mean_perimeter,
-        'Mean Area': mean_area,
-        'Mean Concavity': mean_concavity,
-        'Mean Concave Points': mean_concave_points,
-        'Worst Radius': worst_radius,
-        'Worst Perimeter': worst_perimeter,
-        'Worst Area': worst_area,
-        'Worst Concavity': worst_concavity,
-        'Worst Concave Points': worst_concave_points
+        'mean radius': mean_radius,
+        'mean perimeter': mean_perimeter,
+        'mean area': mean_area,
+        'mean concavity': mean_concavity,
+        'mean concave points': mean_concave_points,
+        'worst radius': worst_radius,
+        'worst perimeter': worst_perimeter,
+        'worst area': worst_area,
+        'worst concavity': worst_concavity,
+        'worst concave points': worst_concave_points
     }
     features = pd.DataFrame(data, index=[0])
     return features
@@ -48,9 +48,9 @@ input_df = user_input_features()
 
 # Ensure the input features match the scaler's expected order
 selected_features = [
-    'Mean Radius', 'Mean Perimeter', 'Mean Area', 'Mean Concavity', 
-    'Mean Concave Points', 'Worst Radius', 'Worst Perimeter', 
-    'Worst Area', 'Worst Concavity', 'Worst Concave Points'
+    'mean radius', 'mean perimeter', 'mean area', 'mean concavity', 
+    'mean concave points', 'worst radius', 'worst perimeter', 
+    'worst area', 'worst concavity', 'worst concave points'
 ]
 
 input_df = input_df[selected_features]
@@ -75,7 +75,7 @@ st.write(f"{prediction[0][0] * 100:.2f}%")
 col1, col2 = st.columns(2)
 
 # Visualization for size features
-size_features = ['Mean Radius', 'Mean Perimeter', 'Mean Area', 'Worst Radius', 'Worst Perimeter', 'Worst Area']
+size_features = ['mean radius', 'mean perimeter', 'mean area', 'worst radius', 'worst perimeter', 'worst area']
 size_df = input_df[size_features]
 
 with col1:
@@ -88,7 +88,7 @@ with col1:
     st.pyplot(fig)
 
 # Visualization for other features
-other_features = ['Mean Concavity', 'Mean Concave Points', 'Worst Concavity', 'Worst Concave Points']
+other_features = ['mean concavity', 'mean concave points', 'worst concavity', 'worst concave points']
 other_df = input_df[other_features]
 
 with col2:
@@ -122,3 +122,4 @@ st.sidebar.subheader("Feedback")
 feedback = st.sidebar.text_area("Please provide your feedback here:")
 if st.sidebar.button("Submit"):
     st.sidebar.write("Thank you for your feedback!")
+
