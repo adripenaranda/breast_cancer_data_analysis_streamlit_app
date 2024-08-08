@@ -82,7 +82,9 @@ with col1:
     st.subheader('Size Features Visualization')
     fig, ax = plt.subplots()
     sns.barplot(x=size_df.columns, y=size_df.iloc[0], ax=ax, palette='coolwarm')
-    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
+    ax.set_xticklabels(['Mean Radius (µm)', 'Mean Perimeter (µm)', 'Mean Area (µm²)', 
+                        'Worst Radius (µm)', 'Worst Perimeter (µm)', 'Worst Area (µm²)'], 
+                       rotation=45, horizontalalignment='right')
     ax.set_ylabel('Values (µm or µm²)')
     ax.set_xlabel('Features')
     st.pyplot(fig)
@@ -95,11 +97,13 @@ with col2:
     st.subheader('Other Features Visualization')
     fig, ax = plt.subplots()
     sns.barplot(x=other_df.columns, y=other_df.iloc[0], ax=ax, palette='viridis')
-    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
+    ax.set_xticklabels(['Mean Concavity', 'Mean Concave Points', 
+                        'Worst Concavity', 'Worst Concave Points'], 
+                       rotation=45, horizontalalignment='right')
     ax.set_ylabel('Dimensionless Values')
     ax.set_xlabel('Features')
     st.pyplot(fig)
-
+    
 # Education section with colored headers
 st.subheader('Understanding the Features')
 st.markdown("""
