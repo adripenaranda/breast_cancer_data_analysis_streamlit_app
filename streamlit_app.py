@@ -7,17 +7,18 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import textwrap  # Import textwrap for wrapping labels
 
-# Load the model and scaler
+# Load the pre-trained model and scaler from disk
 model = load_model('model.keras')
 with open('scaler.pkl', 'rb') as f:
     scaler = pickle.load(f)
 
-# Streamlit app title with color
+# Display the main title of the Streamlit app with a specific color
 st.markdown("<h1 style='color: #FFA07A;'>Breast Cancer Prediction App</h1>", unsafe_allow_html=True)
 
-# Sidebar for user inputs with header color
+# Create a sidebar with input sliders for user input and a colored header
 st.sidebar.markdown("<h2 style='color: #20B2AA;'>Input Features</h2>", unsafe_allow_html=True)
 
+# Define a function to capture user input features from the sidebar
 def user_input_features():
     mean_radius = st.sidebar.slider("Mean Radius (µm)", 6.0, 30.0, 14.0)
     mean_perimeter = st.sidebar.slider("Mean Perimeter (µm)", 40.0, 200.0, 90.0)
@@ -30,6 +31,7 @@ def user_input_features():
     worst_concavity = st.sidebar.slider("Worst Concavity", 0.0, 1.5, 0.5)
     worst_concave_points = st.sidebar.slider("Worst Concave Points", 0.0, 0.5, 0.2)
     
+    # Store the input values in a dictionary
     data = {
         'mean radius': mean_radius,
         'mean perimeter': mean_perimeter,
@@ -42,50 +44,55 @@ def user_input_features():
         'worst concavity': worst_concavity,
         'worst concave points': worst_concave_points
     }
+    
+    # Convert the dictionary to a DataFrame
     features = pd.DataFrame(data, index=[0])
     return features
 
+# Call the function to get user input and store it in a DataFrame
 input_df = user_input_features()
 
-# Ensure the input features match the scaler's expected order
+# Ensure the order of input features matches the scaler's expected order
 selected_features = [
     'mean radius', 'mean perimeter', 'mean area', 'mean concavity', 
     'mean concave points', 'worst radius', 'worst perimeter', 
     'worst area', 'worst concavity', 'worst concave points'
 ]
 
+# Reorder the input DataFrame columns to match the selected features
 input_df = input_df[selected_features]
 
-# Scale the input features
+# Scale the user input features using the loaded scaler
 scaled_input = scaler.transform(input_df)
 
-# Make prediction
+# Make a prediction using the pre-trained model
 prediction = model.predict(scaled_input)
 
-# Output prediction with color
+# Display the prediction result with appropriate color coding
 st.subheader('Prediction')
 if prediction[0][0] > 0.5:
     st.markdown("<h3 style='color: #FF4500;'>Malignant</h3>", unsafe_allow_html=True)
 else:
     st.markdown("<h3 style='color: #32CD32;'>Benign</h3>", unsafe_allow_html=True)
 
+# Display the prediction probability
 st.subheader('Prediction Probability')
 st.write(f"{prediction[0][0] * 100:.2f}%")
 
-
-# Function to wrap labels
+# Define a function to wrap text labels for better readability
 def wrap_labels(labels, width):
     return [textwrap.fill(label, width) for label in labels]
 
 # Create two columns for side-by-side visualizations
 col1, col2 = st.columns(2)
 
-# Visualization for size features
+# Select features related to size for visualization
 size_features = ['mean radius', 'mean perimeter', 'mean area', 'worst radius', 'worst perimeter', 'worst area']
 size_df = input_df[size_features]
 
+# Display a bar plot of size features in the first column
 with col1:
-    st.subheader('Size Features ')
+    st.subheader('Size Features')
     fig, ax = plt.subplots(figsize=(8, 4))  # Adjust the figsize to make the plot bigger
     sns.barplot(x=size_df.columns, y=size_df.iloc[0], ax=ax, palette='coolwarm')
     ax.set_xticklabels(wrap_labels(['Mean Radius (µm)', 'Mean Perimeter (µm)', 'Mean Area (µm²)', 
@@ -95,12 +102,13 @@ with col1:
     ax.set_xlabel('Features', fontsize=16)
     st.pyplot(fig)
 
-# Visualization for other features
+# Select other features for visualization
 other_features = ['mean concavity', 'mean concave points', 'worst concavity', 'worst concave points']
 other_df = input_df[other_features]
 
+# Display a bar plot of other features in the second column
 with col2:
-    st.subheader('Other Features ')
+    st.subheader('Other Features')
     fig, ax = plt.subplots(figsize=(8, 4))  # Adjust the figsize to make the plot bigger
     sns.barplot(x=other_df.columns, y=other_df.iloc[0], ax=ax, palette='viridis')
     ax.set_xticklabels(wrap_labels(['Mean Concavity', 'Mean Concave Points', 
@@ -109,9 +117,8 @@ with col2:
     ax.set_ylabel('Dimensionless Values', fontsize=16)
     ax.set_xlabel('Features', fontsize=16)
     st.pyplot(fig)
-    
-    
-# Education section with colored headers
+
+# Display a section with descriptions of the input features
 st.subheader('Understanding the Features')
 st.markdown("""
 <ul>
@@ -128,9 +135,8 @@ st.markdown("""
 </ul>
 """, unsafe_allow_html=True)
 
-# Additional interactivity: User feedback
+# Add a feedback section in the sidebar
 st.sidebar.subheader("Feedback")
 feedback = st.sidebar.text_area("Please provide your feedback here:")
 if st.sidebar.button("Submit"):
     st.sidebar.write("Thank you for your feedback!")
-
