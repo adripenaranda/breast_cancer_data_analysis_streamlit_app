@@ -30,16 +30,16 @@ def user_input_features():
     worst_concave_points = st.sidebar.slider("Worst Concave Points", 0.0, 0.5, 0.2)
     
     data = {
-        'mean radius': mean_radius,
-        'mean perimeter': mean_perimeter,
-        'mean area': mean_area,
-        'mean concavity': mean_concavity,
-        'mean concave points': mean_concave_points,
-        'worst radius': worst_radius,
-        'worst perimeter': worst_perimeter,
-        'worst area': worst_area,
-        'worst concavity': worst_concavity,
-        'worst concave points': worst_concave_points
+        'Mean Radius': mean_radius,
+        'Mean Perimeter': mean_perimeter,
+        'Mean Area': mean_area,
+        'Mean Concavity': mean_concavity,
+        'Mean Concave Points': mean_concave_points,
+        'Worst Radius': worst_radius,
+        'Worst Perimeter': worst_perimeter,
+        'Worst Area': worst_area,
+        'Worst Concavity': worst_concavity,
+        'Worst Concave Points': worst_concave_points
     }
     features = pd.DataFrame(data, index=[0])
     return features
@@ -48,9 +48,9 @@ input_df = user_input_features()
 
 # Ensure the input features match the scaler's expected order
 selected_features = [
-    'mean radius', 'mean perimeter', 'mean area', 'mean concavity', 
-    'mean concave points', 'worst radius', 'worst perimeter', 
-    'worst area', 'worst concavity', 'worst concave points'
+    'Mean Radius', 'Mean Perimeter', 'Mean Area', 'Mean Concavity', 
+    'Mean Concave Points', 'Worst Radius', 'Worst Perimeter', 
+    'Worst Area', 'Worst Concavity', 'Worst Concave Points'
 ]
 
 input_df = input_df[selected_features]
@@ -71,26 +71,34 @@ else:
 st.subheader('Prediction Probability')
 st.write(f"{prediction[0][0] * 100:.2f}%")
 
-# Separate visualizations for different metrics
-st.subheader('Size Features Visualization')
-size_features = ['mean radius', 'mean perimeter', 'mean area', 'worst radius', 'worst perimeter', 'worst area']
+# Create two columns for side-by-side visualizations
+col1, col2 = st.columns(2)
+
+# Visualization for size features
+size_features = ['Mean Radius', 'Mean Perimeter', 'Mean Area', 'Worst Radius', 'Worst Perimeter', 'Worst Area']
 size_df = input_df[size_features]
 
-fig, ax = plt.subplots()
-sns.barplot(x=size_df.columns, y=size_df.iloc[0], ax=ax, palette='coolwarm')
-ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
-ax.set_ylabel('Values (µm or µm²)')
-st.pyplot(fig)
+with col1:
+    st.subheader('Size Features Visualization')
+    fig, ax = plt.subplots()
+    sns.barplot(x=size_df.columns, y=size_df.iloc[0], ax=ax, palette='coolwarm')
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
+    ax.set_ylabel('Values (µm or µm²)')
+    ax.set_xlabel('Features')
+    st.pyplot(fig)
 
-st.subheader('Other Features Visualization')
-other_features = ['mean concavity', 'mean concave points', 'worst concavity', 'worst concave points']
+# Visualization for other features
+other_features = ['Mean Concavity', 'Mean Concave Points', 'Worst Concavity', 'Worst Concave Points']
 other_df = input_df[other_features]
 
-fig, ax = plt.subplots()
-sns.barplot(x=other_df.columns, y=other_df.iloc[0], ax=ax, palette='viridis')
-ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
-ax.set_ylabel('Dimensionless Values')
-st.pyplot(fig)
+with col2:
+    st.subheader('Other Features Visualization')
+    fig, ax = plt.subplots()
+    sns.barplot(x=other_df.columns, y=other_df.iloc[0], ax=ax, palette='viridis')
+    ax.set_xticklabels(ax.get_xticklabels(), rotation=45, horizontalalignment='right')
+    ax.set_ylabel('Dimensionless Values')
+    ax.set_xlabel('Features')
+    st.pyplot(fig)
 
 # Education section with colored headers
 st.subheader('Understanding the Features')
@@ -114,4 +122,3 @@ st.sidebar.subheader("Feedback")
 feedback = st.sidebar.text_area("Please provide your feedback here:")
 if st.sidebar.button("Submit"):
     st.sidebar.write("Thank you for your feedback!")
-
