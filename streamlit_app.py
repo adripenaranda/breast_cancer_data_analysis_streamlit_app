@@ -5,6 +5,7 @@ from tensorflow.keras.models import load_model
 import pickle
 import matplotlib.pyplot as plt
 import seaborn as sns
+import textwrap  # Import textwrap for wrapping labels
 
 # Load the model and scaler
 model = load_model('model.keras')
